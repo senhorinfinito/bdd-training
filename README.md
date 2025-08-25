@@ -1,2 +1,5 @@
-# bdd-training
-this is mini project
+# BDD Training 
+
+> [!info]  
+> This feature is currently **under development**.
+
