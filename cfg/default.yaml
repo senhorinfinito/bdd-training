@@ -1,0 +1,23 @@
+paths:
+  image_root : ../dataset/bdd100k_images_100k/bdd100k/images/100k
+  det_train : ../dataset/bdd100k_labels_release/bdd100k/labels/bdd100k_labels_images_train.json
+  det_val : ../dataset/bdd100k_labels_release/bdd100k/labels/bdd100k_labels_images_val.json
+  vis_dir : ./cfg/data/insights
+# classes
+classes:
+  - person
+  - rider
+  - car
+  - bus
+  - truck
+  - bike
+  - motor
+  - traffic light
+  - traffic sign
+  - train
+
+convert: 
+  yolo : true
+
+visulize :
+  dashboard :  false
