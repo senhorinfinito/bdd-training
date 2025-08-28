@@ -4,12 +4,15 @@ import matplotlib.pyplot as plt
 from pandas import DataFrame
 
 class VisDataset:
-    def __init__(self, config, train_data=[], val_data=[]):
+    def __init__(self, config, train_data=[], val_data=[], isfiltered = False):
         self.config = config
         self.train_df = DataFrame(train_data)
         self.val_df = DataFrame(val_data)
         self.vis_dir = config.get("paths", {}).get("vis_dir", "./cfg/data/insights")
+        if isfiltered:
+            self.vis_dir = os.path.join(self.vis_dir, "filtered")
         os.makedirs(self.vis_dir, exist_ok=True)
+        
 
     def _counts(self, df, col):
         return df[col].value_counts().to_dict() if col in df.columns else {}

@@ -3,6 +3,8 @@ paths:
   det_train : ../dataset/bdd100k_labels_release/bdd100k/labels/bdd100k_labels_images_train.json
   det_val : ../dataset/bdd100k_labels_release/bdd100k/labels/bdd100k_labels_images_val.json
   vis_dir : ./cfg/data/insights
+  output_labels :  ../final_dataset
+  
 # classes
 classes:
   - person

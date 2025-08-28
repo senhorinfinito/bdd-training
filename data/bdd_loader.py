@@ -13,7 +13,9 @@ class BDD:
         self.det_val =  config.get("paths").get("det_val", None)
         self.img_dir = config.get("paths").get("image_root", None) 
         self.classes =  config.get("classes", [])
-    
+        self.label_dir  = config.get("paths").get("output_labels", "../dataset")
+        os.makedirs(self.label_dir, exist_ok=True)
+        
     def _get_images(self):
         _all_images = {}
         if self.img_dir is None:
@@ -116,7 +118,7 @@ class BDD:
                 })
 
             if yolo:
-                yolo_dir  = os.path.join(self.img_dir, "..", "labels")
+                yolo_dir  = os.path.join(self.label_dir,  "labels")
                 yolo_writer(yolo_annots, os.path.join(yolo_dir, "train" if istrain else "val", __image_name.replace(".jpg", ".txt")))
                 del yolo_annots
                 
