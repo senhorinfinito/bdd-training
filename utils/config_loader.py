@@ -1,16 +1,18 @@
 import yaml
-from utils.custom_logger import logger, one_line_symbol 
+from utils.custom_logger import logger, one_line_symbol
+
 __module_name__ = "[Config Parser]"
 
-class ConfigParser:
 
+class ConfigParser:
     REQUIRED_KEYS = ["paths", "classes"]
+
     def __init__(self, config_path="./cfg/default.yaml"):
         self.config_path = config_path
-    
+
     def __load_yaml(self):
         try:
-            with open(self.config_path, 'r') as f:
+            with open(self.config_path, "r") as f:
                 return yaml.safe_load(f)
         except FileNotFoundError:
             raise FileNotFoundError(f"Configuration file not found: {self.config_path}")
@@ -24,9 +26,12 @@ class ConfigParser:
     def get_data(self):
         config = self.__load_yaml()
         self.__validate_config(config)
-        logger.info(f"{__module_name__} : Configuration loaded successfully :  {config}")
+        logger.info(
+            f"{__module_name__} : Configuration loaded successfully :  {config}"
+        )
         one_line_symbol()
         return config
-    
-if __name__ ==  "__main__":
-    config  =  ConfigParser().get_data()
+
+
+if __name__ == "__main__":
+    config = ConfigParser().get_data()

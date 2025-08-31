@@ -3,13 +3,14 @@ import streamlit as st
 import pandas as pd
 from PIL import Image, ImageDraw
 
-# Dataset analysis 
+# Dataset analysis
 from data.bdd_loader import BDD
 from utils.config_loader import ConfigParser
 
 # ------------------------------
 # 1. Load config & dataset (cached)
 # ------------------------------
+
 
 @st.cache_data(show_spinner=False)  # disable default spinner
 def load_datasets_with_progress():
@@ -18,7 +19,7 @@ def load_datasets_with_progress():
     bdd = BDD(config)
 
     progress = st.progress(0, text="Loading datasets...")
-    
+
     # Step 1: load images
     imgs = bdd._get_images()
     progress.progress(20, text="Loaded image paths")
@@ -55,6 +56,7 @@ st.set_page_config(layout="wide")
 # Extra: Train vs Val comparison
 # ------------------------------
 
+
 def get_category_stats(df):
     """Return per-category bbox_count and image_count."""
     cat_counts = df["category"].value_counts().reset_index()
@@ -65,9 +67,16 @@ def get_category_stats(df):
 
     return pd.merge(cat_counts, img_counts, on="category")
 
+
 # compute stats
-train_stats = get_category_stats(train_data) if "category" in train_data.columns else pd.DataFrame()
-val_stats = get_category_stats(val_data) if "category" in val_data.columns else pd.DataFrame()
+train_stats = (
+    get_category_stats(train_data)
+    if "category" in train_data.columns
+    else pd.DataFrame()
+)
+val_stats = (
+    get_category_stats(val_data) if "category" in val_data.columns else pd.DataFrame()
+)
 
 if not train_stats.empty and not val_stats.empty:
     st.subheader("Train vs Val Category Comparison")
@@ -82,11 +91,12 @@ if not train_stats.empty and not val_stats.empty:
 
     # Bar chart using Altair
     import altair as alt
+
     chart_data = merged_stats.melt(
         id_vars="category",
         value_vars=["image_count_train", "image_count_val"],
         var_name="dataset",
-        value_name="count"
+        value_name="count",
     )
 
     chart = (
@@ -96,13 +106,15 @@ if not train_stats.empty and not val_stats.empty:
             x=alt.X("category:N", title="Category"),
             y=alt.Y("count:Q", title="Image Count"),
             color="dataset:N",
-            tooltip=["category", "dataset", "count"]
+            tooltip=["category", "dataset", "count"],
         )
         .properties(width=500, height=400)
     )
     st.altair_chart(chart, use_container_width=True)
 else:
-    st.info("Category comparison unavailable (no category column in one of the datasets).")
+    st.info(
+        "Category comparison unavailable (no category column in one of the datasets)."
+    )
 
 
 # Dataset selector
@@ -114,11 +126,7 @@ else:
 
 # threshold slider
 threshold = st.slider(
-    "Select bbox threshold (px)",
-    min_value=16,
-    max_value=100,
-    value=16,
-    step=1
+    "Select bbox threshold (px)", min_value=16, max_value=100, value=16, step=1
 )
 
 # ------------------------------
@@ -159,6 +167,7 @@ for col, val in filters.items():
 
 st.write(f"Total boxes under threshold {threshold}px after filters: {len(filtered)}")
 
+
 # ------------------------------
 # 5. Draw bboxes
 # ------------------------------
@@ -171,6 +180,7 @@ def draw_bboxes(image_path, df_subset):
         if "category" in row:
             draw.text((row["x1"], row["y1"] - 10), str(row["category"]), fill="red")
     return img
+
 
 # ------------------------------
 # 6. Layout: left images | right stats
@@ -195,7 +205,7 @@ st.markdown(
     }
     </style>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
 # Right column → stats
@@ -213,11 +223,12 @@ with right_col:
         st.dataframe(cat_stats, use_container_width=True, height=300)
 
         import altair as alt
+
         chart_data = cat_stats.melt(
             id_vars="category",
             value_vars=["bbox_count", "image_count"],
             var_name="metric",
-            value_name="count"
+            value_name="count",
         )
         max_val = chart_data["count"].max()
         chart = (
@@ -227,7 +238,7 @@ with right_col:
                 x=alt.X("category:N", title="Category"),
                 y=alt.Y("count:Q", scale=alt.Scale(domain=[0, max_val]), title="Count"),
                 color="metric:N",
-                tooltip=["category", "metric", "count"]
+                tooltip=["category", "metric", "count"],
             )
             .properties(width=300, height=300)
         )
