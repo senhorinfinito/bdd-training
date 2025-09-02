@@ -63,6 +63,7 @@ class BDD:
             raise ValueError(
                 "Detection training labels path is not specified in the configuration."
             )
+        data = None
 
         if istrain:
             try:
@@ -79,6 +80,9 @@ class BDD:
                     data = json.load(f)
             except Exception as e:
                 logger.error(f"Error loading validation labels: {e}")
+                
+        if data is None:
+            raise Exception("Data is not found")
 
         for i in tqdm(
             range(len(data)), desc=f"Processing {'train' if istrain else 'val'} labels"

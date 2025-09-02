@@ -1,1 +1,5 @@
 ultralytics
+pandas
+tqdm 
+streamlit 
+pycocotools

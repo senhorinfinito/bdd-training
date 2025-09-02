@@ -15,7 +15,7 @@ from pycocotools.cocoeval import COCOeval
 # ------------------------------
 config = ConfigParser().get_data()
 paths = config.get("paths", {})
-IMG_PATH = os.path.join(paths.get("output_labels"), "labels_filtered/images/val")
+IMG_PATH = os.path.join(paths.get("output_labels"), "labels_filtered/val/images")
 GT_PATH = os.path.join(paths.get("output_labels"), "labels/val")
 PRED_PATH = os.path.join(paths.get("output_labels"), "labels_filtered/preds")
 
