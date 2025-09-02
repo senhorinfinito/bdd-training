@@ -166,12 +166,12 @@ if df is not None:
     sort_order = st.sidebar.radio("Order", ["Descending", "Ascending"], index=0)
     filtered = filtered.sort_values(by=sort_by, ascending=(sort_order == "Ascending"))
 
-    # Stats Panel
-    st.subheader("Statistics")
-    col1, col2, col3 = st.columns(3)
-    if "precision" in filtered.columns: col1.metric("Avg Precision", f"{filtered['precision'].mean():.3f}")
-    if "recall" in filtered.columns: col2.metric("Avg Recall", f"{filtered['recall'].mean():.3f}")
-    if "f1" in filtered.columns: col3.metric("Avg F1", f"{filtered['f1'].mean():.3f}")
+    # # Stats Panel
+    # st.subheader("Statistics")
+    # col1, col2, col3 = st.columns(3)
+    # if "precision" in filtered.columns: col1.metric("Avg Precision", f"{filtered['precision'].mean():.3f}")
+    # if "recall" in filtered.columns: col2.metric("Avg Recall", f"{filtered['recall'].mean():.3f}")
+    # if "f1" in filtered.columns: col3.metric("Avg F1", f"{filtered['f1'].mean():.3f}")
 
     # Error count chart
     if "error_type" in filtered.columns:
